@@ -1,0 +1,710 @@
+﻿@{
+    ViewData["Title"] = "Calculator";
+}
+
+<div class="calculator">
+
+    <div class="display">
+
+        <div id="previous"></div>
+
+        <div id="current">0</div>
+
+    </div>
+
+
+    <div class="buttons">
+
+        <!-- Top row -->
+
+        <button class="span-two action"
+                onclick="buttonSound(); clearCalculator()">
+            AC
+        </button>
+
+        <button class="action"
+                onclick="buttonSound(); backspace()">
+            ←
+        </button>
+
+        <button class="action"
+                onclick="buttonSound(); toggleSign()">
+            ±
+        </button>
+
+
+        <!-- Operators -->
+
+        <button class="action"
+                onclick="buttonSound(); percentage()">
+            %
+        </button>
+
+
+        <!-- Row 2 -->
+
+        <button onclick="buttonSound(); appendNumber('7')">
+            7
+        </button>
+
+        <button onclick="buttonSound(); appendNumber('8')">
+            8
+        </button>
+
+        <button onclick="buttonSound(); appendNumber('9')">
+            9
+        </button>
+
+        <button class="operator"
+                onclick="buttonSound(); chooseOperation('÷')">
+            ÷
+        </button>
+
+
+        <!-- Row 3 -->
+
+        <button onclick="buttonSound(); appendNumber('4')">
+            4
+        </button>
+
+        <button onclick="buttonSound(); appendNumber('5')">
+            5
+        </button>
+
+        <button onclick="buttonSound(); appendNumber('6')">
+            6
+        </button>
+
+        <button class="operator"
+                onclick="buttonSound(); chooseOperation('×')">
+            ×
+        </button>
+
+
+        <!-- Row 4 -->
+
+        <button onclick="buttonSound(); appendNumber('1')">
+            1
+        </button>
+
+        <button onclick="buttonSound(); appendNumber('2')">
+            2
+        </button>
+
+        <button onclick="buttonSound(); appendNumber('3')">
+            3
+        </button>
+
+        <button class="operator"
+                onclick="buttonSound(); chooseOperation('-')">
+            −
+        </button>
+
+
+        <!-- Bottom row -->
+
+        <button class="span-two"
+                onclick="buttonSound(); appendNumber('0')">
+            0
+        </button>
+
+        <button onclick="buttonSound(); appendDecimal()">
+            .
+        </button>
+
+        <button class="operator"
+                onclick="buttonSound(); chooseOperation('+')">
+            +
+        </button>
+
+
+        <!-- Equals -->
+
+        <button class="span-two equals"
+                onclick="buttonSound(); calculate()">
+            =
+        </button>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        /* ==========================================
+           CALCULATOR VARIABLES
+           ========================================== */
+
+        let currentNumber = "0";
+
+        let previousNumber = "";
+
+        let operation = null;
+
+        let resetScreen = false;
+
+
+        const currentDisplay =
+            document.getElementById("current");
+
+        const previousDisplay =
+            document.getElementById("previous");
+
+
+        /* ==========================================
+           DISPLAY
+           ========================================== */
+
+        function updateDisplay() {
+
+            currentDisplay.textContent =
+                currentNumber;
+
+            if (previousNumber !== "" && operation !== null) {
+
+                previousDisplay.textContent =
+                    previousNumber + " " + operation;
+
+            } else {
+
+                previousDisplay.textContent = "";
+
+            }
+        }
+
+
+        /* ==========================================
+           ENTER NUMBER
+           ========================================== */
+
+        function appendNumber(number) {
+
+            if (
+                currentNumber === "0" ||
+                currentNumber === "Error" ||
+                resetScreen
+            ) {
+
+                currentNumber = number;
+
+                resetScreen = false;
+
+            } else {
+
+                currentNumber += number;
+
+            }
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           DECIMAL
+           ========================================== */
+
+        function appendDecimal() {
+
+            if (
+                currentNumber === "Error" ||
+                resetScreen
+            ) {
+
+                currentNumber = "0";
+
+                resetScreen = false;
+            }
+
+            if (!currentNumber.includes(".")) {
+
+                currentNumber += ".";
+
+            }
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           SELECT OPERATION
+           ========================================== */
+
+        function chooseOperation(selectedOperation) {
+
+            if (
+                operation !== null &&
+                previousNumber !== "" &&
+                !resetScreen
+            ) {
+
+                calculate();
+
+            }
+
+            previousNumber = currentNumber;
+
+            operation = selectedOperation;
+
+            resetScreen = true;
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           CALCULATE
+           ========================================== */
+
+        function calculate() {
+
+            if (
+                operation === null ||
+                previousNumber === ""
+            ) {
+
+                return;
+
+            }
+
+
+            const first =
+                parseFloat(previousNumber);
+
+            const second =
+                parseFloat(currentNumber);
+
+
+            let result;
+
+
+            switch (operation) {
+
+                case "+":
+
+                    result = first + second;
+
+                    break;
+
+
+                case "-":
+
+                    result = first - second;
+
+                    break;
+
+
+                case "×":
+
+                    result = first * second;
+
+                    break;
+
+
+                case "÷":
+
+                    if (second === 0) {
+
+                        currentNumber = "Error";
+
+                        previousNumber = "";
+
+                        operation = null;
+
+                        resetScreen = true;
+
+                        updateDisplay();
+
+                        return;
+                    }
+
+                    result = first / second;
+
+                    break;
+            }
+
+
+            /* Remove ugly floating point errors */
+
+            if (
+                typeof result === "number" &&
+                isFinite(result)
+            ) {
+
+                result =
+                    parseFloat(result.toPrecision(12));
+
+            }
+
+
+            currentNumber =
+                String(result);
+
+            previousNumber = "";
+
+            operation = null;
+
+            resetScreen = true;
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           CLEAR
+           ========================================== */
+
+        function clearCalculator() {
+
+            currentNumber = "0";
+
+            previousNumber = "";
+
+            operation = null;
+
+            resetScreen = false;
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           BACKSPACE
+           ========================================== */
+
+        function backspace() {
+
+            if (
+                currentNumber === "Error" ||
+                resetScreen
+            ) {
+
+                return;
+            }
+
+
+            if (currentNumber.length > 1) {
+
+                currentNumber =
+                    currentNumber.slice(0, -1);
+
+            } else {
+
+                currentNumber = "0";
+
+            }
+
+
+            if (
+                currentNumber === "-" ||
+                currentNumber === ""
+            ) {
+
+                currentNumber = "0";
+
+            }
+
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           PLUS / MINUS
+           ========================================== */
+
+        function toggleSign() {
+
+            if (
+                currentNumber === "0" ||
+                currentNumber === "Error"
+            ) {
+
+                return;
+
+            }
+
+
+            if (currentNumber.startsWith("-")) {
+
+                currentNumber =
+                    currentNumber.substring(1);
+
+            } else {
+
+                currentNumber =
+                    "-" + currentNumber;
+
+            }
+
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           PERCENTAGE
+           ========================================== */
+
+        function percentage() {
+
+            if (
+                currentNumber === "Error"
+            ) {
+
+                return;
+
+            }
+
+
+            currentNumber =
+                String(
+                    parseFloat(currentNumber) / 100
+                );
+
+
+            updateDisplay();
+        }
+
+
+        /* ==========================================
+           TYPEWRITER / MECHANICAL KEY SOUND
+           ========================================== */
+
+        let audioContext = null;
+
+
+        function buttonSound() {
+
+            try {
+
+                if (!audioContext) {
+
+                    audioContext =
+                        new (
+                            window.AudioContext ||
+                            window.webkitAudioContext
+                        )();
+
+                }
+
+
+                if (
+                    audioContext.state === "suspended"
+                ) {
+
+                    audioContext.resume();
+
+                }
+
+
+                const oscillator =
+                    audioContext.createOscillator();
+
+                const gain =
+                    audioContext.createGain();
+
+
+                oscillator.type = "square";
+
+                oscillator.frequency.setValueAtTime(
+                    120,
+                    audioContext.currentTime
+                );
+
+
+                oscillator.frequency.exponentialRampToValueAtTime(
+                    70,
+                    audioContext.currentTime + 0.035
+                );
+
+
+                gain.gain.setValueAtTime(
+                    0.045,
+                    audioContext.currentTime
+                );
+
+
+                gain.gain.exponentialRampToValueAtTime(
+                    0.001,
+                    audioContext.currentTime + 0.045
+                );
+
+
+                oscillator.connect(gain);
+
+                gain.connect(
+                    audioContext.destination
+                );
+
+
+                oscillator.start();
+
+                oscillator.stop(
+                    audioContext.currentTime + 0.045
+                );
+
+            }
+
+            catch (error) {
+
+                /* Sound is optional.
+                   Calculator continues normally. */
+
+            }
+        }
+
+
+        /* ==========================================
+           KEYBOARD SUPPORT
+           ========================================== */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                const key = event.key;
+
+
+                /* Numbers */
+
+                if (
+                    key >= "0" &&
+                    key <= "9"
+                ) {
+
+                    buttonSound();
+
+                    appendNumber(key);
+
+                    return;
+                }
+
+
+                /* Decimal */
+
+                if (key === ".") {
+
+                    buttonSound();
+
+                    appendDecimal();
+
+                    return;
+                }
+
+
+                /* Addition */
+
+                if (key === "+") {
+
+                    buttonSound();
+
+                    chooseOperation("+");
+
+                    return;
+                }
+
+
+                /* Subtraction */
+
+                if (key === "-") {
+
+                    buttonSound();
+
+                    chooseOperation("-");
+
+                    return;
+                }
+
+
+                /* Multiplication */
+
+                if (key === "*") {
+
+                    buttonSound();
+
+                    chooseOperation("×");
+
+                    return;
+                }
+
+
+                /* Division */
+
+                if (key === "/") {
+
+                    event.preventDefault();
+
+                    buttonSound();
+
+                    chooseOperation("÷");
+
+                    return;
+                }
+
+
+                /* Enter */
+
+                if (
+                    key === "Enter" ||
+                    key === "="
+                ) {
+
+                    buttonSound();
+
+                    calculate();
+
+                    return;
+                }
+
+
+                /* Escape = AC */
+
+                if (key === "Escape") {
+
+                    buttonSound();
+
+                    clearCalculator();
+
+                    return;
+                }
+
+
+                /* Backspace */
+
+                if (key === "Backspace") {
+
+                    buttonSound();
+
+                    backspace();
+
+                    return;
+                }
+
+
+                /* Percentage */
+
+                if (key === "%") {
+
+                    buttonSound();
+
+                    percentage();
+
+                    return;
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+           START CALCULATOR
+           ========================================== */
+
+        updateDisplay();
+
+    </script>
+
+}

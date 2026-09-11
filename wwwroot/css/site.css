@@ -1,0 +1,317 @@
+/* ==========================================
+   VINTAGE TYPEWRITER CALCULATOR
+   Coffee • Cream • Paper • Subtle Shine
+   ========================================== */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: block;
+    background: radial-gradient( circle at 50% 20%, rgba(255, 245, 220, 0.35), transparent 40% ), repeating-linear-gradient( 0deg, rgba(80, 50, 20, 0.025) 0px, rgba(80, 50, 20, 0.025) 1px, transparent 1px, transparent 4px ), #d8c39e;
+    font-family: "Courier New", Courier, monospace;
+    color: #2b2118;
+}
+
+
+/* ==========================================
+   BOOTSTRAP CONTAINER
+   ========================================== */
+
+.container {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+/* ==========================================
+   CENTER CALCULATOR
+   ========================================== */
+
+main {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ==========================================
+   CALCULATOR BODY
+   ========================================== */
+
+.calculator {
+    width: 370px;
+    padding: 24px;
+    box-sizing: border-box;
+    border-radius: 14px;
+    background: linear-gradient( 145deg, #514033, #3c2d22 45%, #4a382a );
+    border: 3px solid #2b1e15;
+    box-shadow: 0 18px 35px rgba(45, 30, 15, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -2px 0 rgba(0, 0, 0, 0.35);
+    position: relative;
+}
+
+
+    /* ==========================================
+   VINTAGE LABEL
+   ========================================== */
+
+    .calculator::before {
+        content: "CALCULATOR";
+        display: block;
+        text-align: center;
+        margin-bottom: 14px;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 5px;
+        color: #c9b18d;
+        text-shadow: 1px 1px 0 #1c140e;
+    }
+
+
+/* ==========================================
+   DISPLAY
+   ========================================== */
+
+.display {
+    height: 115px;
+    margin-bottom: 20px;
+    padding: 16px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    background: repeating-linear-gradient( 0deg, rgba(80, 50, 20, 0.035) 0px, rgba(80, 50, 20, 0.035) 1px, transparent 1px, transparent 3px ), linear-gradient( 145deg, #eee0c5, #d8c4a0 );
+    border: 4px solid #211811;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 2px 0 #6b5035;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+
+    /* ==========================================
+   DISPLAY SUBTLE SHINE
+   ========================================== */
+
+    .display::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+
+/* ==========================================
+   PREVIOUS NUMBER
+   ========================================== */
+
+#previous {
+    width: 100%;
+    min-height: 24px;
+    font-size: 17px;
+    color: #77614a;
+    text-align: right;
+    letter-spacing: 1px;
+}
+
+
+/* ==========================================
+   CURRENT NUMBER
+   ========================================== */
+
+#current {
+    width: 100%;
+    font-size: 42px;
+    font-weight: bold;
+    color: #241b15;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+
+/* ==========================================
+   BUTTON GRID
+   ========================================== */
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 11px;
+}
+
+
+    /* ==========================================
+   TYPEWRITER KEYS
+   ========================================== */
+
+    .buttons button {
+        height: 62px;
+        border: 2px solid #2b2017;
+        /*
+       Rounded typewriter keys.
+       NOT completely circular.
+    */
+        border-radius: 14px;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 21px;
+        font-weight: bold;
+        color: #2a2017;
+        /*
+       Cream / ivory key material
+    */
+        background: linear-gradient( 145deg, #f2e5ce 0%, #e3d0ae 45%, #cdb48d 100% );
+        cursor: pointer;
+        /*
+       Physical key depth
+    */
+        box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.8), inset 0 -2px 3px rgba(90, 60, 30, 0.18), 0 5px 0 #211811, 0 7px 8px rgba(30, 20, 10, 0.22);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+    }
+
+
+        /* ==========================================
+   TINY METALLIC SHINE
+   ========================================== */
+
+        .buttons button::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 12%;
+            width: 76%;
+            height: 3px;
+            border-radius: 50%;
+            /*
+       This is the metallic shine.
+       Very subtle — the keys remain cream.
+    */
+            background: linear-gradient( 90deg, transparent, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.25), transparent );
+            opacity: 0.65;
+            pointer-events: none;
+        }
+
+
+        /* ==========================================
+   KEY HOVER
+   ========================================== */
+
+        .buttons button:hover {
+            filter: brightness(1.06);
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.9), inset 0 -2px 3px rgba(90, 60, 30, 0.18), 0 5px 0 #211811, 0 8px 12px rgba(30, 20, 10, 0.28);
+        }
+
+
+        /* ==========================================
+   KEY PRESS
+   ========================================== */
+
+        .buttons button:active {
+            transform: translateY(5px);
+            box-shadow: inset 0 2px 3px rgba(80, 50, 20, 0.25), 0 0 0 #211811, 0 2px 4px rgba(30, 20, 10, 0.2);
+        }
+
+
+    /* ==========================================
+   ACTION KEYS
+   AC / BACKSPACE / ± / %
+   ========================================== */
+
+    .buttons .action {
+        background: linear-gradient( 145deg, #b28a63, #98704c 50%, #805738 );
+        color: #f5e8d0;
+        text-shadow: 1px 1px 0 #4b3020;
+        box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.32), inset 0 -2px 3px rgba(50, 25, 10, 0.28), 0 5px 0 #211811, 0 7px 8px rgba(30, 20, 10, 0.22);
+    }
+
+
+    /* ==========================================
+   OPERATOR KEYS
+   ========================================== */
+
+    .buttons .operator {
+        background: linear-gradient( 145deg, #806047, #62472f 50%, #4c3625 );
+        color: #f4e3c7;
+        text-shadow: 1px 1px 0 #24170e;
+        box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.25), inset 0 -2px 3px rgba(20, 10, 5, 0.35), 0 5px 0 #211811, 0 7px 8px rgba(30, 20, 10, 0.22);
+    }
+
+
+    /* ==========================================
+   EQUALS KEY
+   ========================================== */
+
+    .buttons .equals {
+        background: linear-gradient( 145deg, #d1ad78, #b28a5b 50%, #957143 );
+        color: #fff0d3;
+        text-shadow: 1px 1px 0 #5b4025;
+        box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5), inset 0 -2px 3px rgba(60, 35, 15, 0.25), 0 5px 0 #211811, 0 7px 8px rgba(30, 20, 10, 0.22);
+    }
+
+
+/* ==========================================
+   ZERO BUTTON
+   ========================================== */
+
+.span-two {
+    grid-column: span 2;
+    border-radius: 14px !important;
+}
+
+
+/* ==========================================
+   LITTLE VINTAGE DETAILS
+   ========================================== */
+
+.calculator::after {
+    content: "•                         •";
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: #a58c6d;
+    letter-spacing: 5px;
+}
+
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 500px) {
+
+    .calculator {
+        width: calc(100vw - 30px);
+        padding: 18px;
+    }
+
+    .buttons {
+        gap: 8px;
+    }
+
+        .buttons button {
+            height: 58px;
+            font-size: 19px;
+        }
+
+    #current {
+        font-size: 36px;
+    }
+}
